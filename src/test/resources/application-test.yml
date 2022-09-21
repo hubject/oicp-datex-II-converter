@@ -1,0 +1,3 @@
+auth:
+  apiKey: test-api-key
+  common-names: test

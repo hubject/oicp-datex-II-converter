@@ -1,0 +1,310 @@
+= CONDAX - DATEX II Data Conversion for OICP
+
+Module Documentation Version 1.0
+
+*Version History*
+
+[cols=",,",options="header",]
+|===
+|Version |Contributor |Approved by
+|1.0 |Hubject GmbH |Now GmbH
+|===
+
+* Version 1.0 +
+Original version.
+
+{sp} +
+{sp} +
+
+*Introduction*
+
+The underlying documentation describes the CONDAX (DATAX II CONVERTER)
+module, a service, which transforms static and Point-of-Interest (POI)
+data from the OICP data (version 2.3) format into DATEX II (version
+3.2).
+
+DATEX II is the electronic language used in Europe for the exchange of
+traffic information and traffic data. The development of DATEX II was
+initiated in the early 90s because of the need to exchange information
+between traffic centers of motorway
+operators.footnote:[https://www.datex2.eu/datex2/about]
+
+OICPfootnote:[The OICP has been published under a Creative Commons
+Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) license and is
+accessible at https://github.com/hubject/oicp] is (Open Intercharge
+Protocol) is a de-facto standard in e-mobility being used by thousands
+of Charge Point Operators (CPOs) and E-Mobility Service Providers (EMPs)
+to exchange data through Hubject’s eRoaming hub, the Hubject Brokering
+System (HBS).
+
+In a first instance the CONDAX is a service provided by NOW GmbH /
+Nationale Leitstelle Ladeinfrastruktur in cooperation with Hubject. It
+allows market participants connected to the HBS, to transmit their data
+to the Mobilitäts Daten Marktplatz (MDM) in DATEX II format through
+their existing OICP connections. The CONDAX will take over the
+conversion of beforementioned data and deliver it to the MDM. The MDM is
+Germany’s marketplace for mobility data, operated by the Bundestanstalt
+für Straßenwesen. The MDM is continuously working to make as much
+mobility data as possible accessible, across different means of
+transport, network elements and
+actors.footnote:[https://www.datex2.eu/datex2/about[https://www.mdm-portal.de/about-mdm/?lang=en]]
+
+However, the CONDAX has been published under the Creative Commons
+Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) license. So,
+it’s documentation and source code are freely available for everyone to
+distribute, remix, adapt, and build upon the material in any medium or
+format. The material itself can be accessed under:
+https://github.com/hubject/hbs2-datex-II
+
+{sp} +
+{sp} +
+
+[arabic, start=1]
+. *Function*
+[arabic]
+
+The CONDAX effectively converts data from OICP to DATEX II data format,
+within the boundaries of structural compatibility. The data converted
+includes:
+
+{sp} +
+
+A) Static POI Data +
+
+Static POI data contains a charging points permanent data set, including
+parameters like its
+
+* Operator (CPO)
+* unique IDfootnote:[The EVSEID (Electric Vehicle Supply Equipment)],
+* geographic location
+* street address
+* type of charging infrastructure
+* connectors
+* opening hours
+* supported payment methods
+
+Changes to static POI data will be processed and forwarded to the MDM
+once every 24 hours.footnote:[Please note, that only data originating
+from charging infrastructure located in Germany will be automatically
+transferred to the MDM.]
+
+{sp} +
+
+B) Dynamic POI Data +
+
+Dynamic POI data describes the charging points state regarding
+availability to an EV driver. Dynamic POI data will be transmitted every
+10 minutes to the MDM.
+
+{sp} +
+{sp} +
+
+[arabic, start=2]
+. *Mapping of Data Fields*
+[arabic]
+
+{sp} +
+
+2.1 Structural Difference between OICP and DATEX II
+
+While there are only few content-related differences between OICP and
+DATEX II (the later covers all information of the former), there are
+some substantial structural differences. The OICP applies a charging
+point-based structure, where the EVSEID of a charging point is the main
+parameter to identify a possibility for an EV driver to charge their car
+(‘bottom-up’ methodology). In consequence, that means, the charging
+point is the leading data object, which must exist in the HBS. Whether
+it belongs to a specific charging station or even a charging site is of
+minor significant and seen as optional information (and therefore might
+not be available for all charging points). +
+ +
+In contrast, DATEX II is applying a ‘top-down’ (multi-layered)
+hierarchical structure when it comes to objects, which contain location
+data. At the very top of that hierarchy sits a location site, which
+possess one or charging stations, which possess one or more charging
+points. +
+ +
+This raises the complexity, that where DATEX II might require a site or
+a station, the OICP does not possess that data and a workaround must be
+found how to deal with this problem. Theoretically two solutions present
+themselves:
+
+[upperalpha]
+. {blank}
++
+Try to cluster the charging points to stations and sites based on data
+fields, which actually exist, e.g., geographical vicinity or street
+address. Unfortunately, this is more of a hypothetical possibility as it
+would lead to a lot of data inconsistencies and flawed clustering.
+
+. {blank}
++
+
+Create a site and station object in DATAX II format for every individual
+charging point.
+
+The CONDAX currently applies workaround B) as it less prone to error and
+mirrors ‘lived’ market structures.
+
+{sp} +
+
+2.2 Mapping Tables
+
+[cols=",,",options="header",]
+|===
+|*MAPPING // GENERAL* | |
+|*Requirements* |*DATEX II* |*OICP*
+
+|Geo Coordinates |Facility/LocationReference
+|EvseDataRecord/GeoCoordinates
+
+|Street Address | |
+
+|Type of Charging Infrastructure |ElectricChargingPoint
+|EvseDataRecord/ChargingFacilities
+
+|Connectors/Plugs |ElectricChargingPoint/Connector |EvseDataRecord/Plugs
+
+|Opening Hours |Facility/OperatingHours |EvseDataRecord/OpeningTimes
+
+|Payment Methods |EnergyInfrastructureStation/ +
+AuthenticationAndIdentificationMethods
+|EvseDataRecord/AuthenticationMode
+
+|Contact Details Operator |locationExtension |NOT (YET) AVAILABLE
+
+|EVSEID |ElectricChargingPoint |EvseDataRecord
+
+|Ad-hoc Pricing |ElectricChargingPoint/ElectricEnergyMix/Rates |NOT
+(YET) AVAILABLE
+|===
+
+[cols=",,",options="header",]
+|===
+|*MAPPING // Connectors* | |
+|*OICP* |*OICP Description* |*DATEX II*
+
+|Small Paddle Inductive |Defined plug type. |Other
+
+|Large Paddle Inductive |Defined plug type. |Other
+
+|AVCON Connector |Defined plug type. |Other
+
+|Tesla Connector |Defined plug type. |teslaConnectorEurope
+
+|NEMA 5-20 |Defined plug type. |Other
+
+|Type E French Standard |CEE 7/5 |domesticE
+
+|Type F Schuko |CEE 7/4 |domesticF
+
+|Type G British Standard |BS 1363 |domesticG
+
+|Type J Swiss Standard |SEV 1011 |domestic
+
+|Type 1 Connector (Cable Attached) |Cable attached to IEC 62196-1 type
+1, SAE J1772 connector |iec62196T1
+
+|Type 2 Outlet |IEC 62196-1 type 2 |iec62196T2
+
+|Type 2 Connector (Cable Attached) |Cable attached to IEC 62196-1 type 2
+connector |iec62196T2
+
+|Type 3 Outlet |IEC 62196-1 type 3 |iec62196T3A
+
+|IEC 60309 Single Phase |IEC 60309 |iec60309x2single16
+
+|IEC 60309 Three Phase |IEC 60309 |iec60309x2single16
+
+|CCS Combo 2 Plug (Cable Attached) |IEC 62196-3 CDV DC Combined Charging
+Connector DIN SPEC 70121 refers to ISO / IEC 15118-1 DIS, -2 DIS and
+15118-3 |iec62196T2COMBO
+
+|CCS Combo 1 Plug (Cable Attached) |IEC 62196-3 CDV DC Combined Charging
+Connector with IEC 62196-1 type 2 SAE J1772 connector |iec62196T1COMBO
+
+|CHAdeMO |DC CHAdeMO Connector |chademo
+|===
+
+[cols=",,",options="header",]
+|===
+|*MAPPING // Payment & Authentication* | |
+|*OICP* |*OICP Description* |*DATEX II*
+
+|NFC RFID Classic |Defined authentication |mifareClassic
+
+|NFC RFID DESFire |Defined authentication |mifareDesfire
+
+|PNC |ISO/IEC 15118 |plc
+
+|REMOTE |App, QR-Code, Phone |apps
+
+|Direct Payment |Mobile website |website
+
+|Nor Authentication Required |No Authentication Required
+|unlimitedaccess
+|===
+
+[cols=",",options="header",]
+|===
+|*MAPPING // Type of Charging Infrastructure* |
+|*OICP* |*DATEX II*
+
+|Voltage (EvseDataRecord/ChargingFacility)
+|ElectricChargingPoint/AvailableVoltage
+
+|Power (EvseDataRecord/ChargingFacility)
+|ElectricChargingPoint/AvailableChargingPower*
+|===
+
+[cols=",",options="header",]
+|===
+|*MAPPING // Status and Availability* |
+|*OICP* |*DATEX II*
+|EvseStatus |RefillPointStatus
+|===
+
+{sp} +
+{sp} +
+
+[arabic, start=3]
+. Frequently Asked Questions (FAQ) +
+[arabic]
+
+* _How can I use CONDAX as a service?_ +
+ +
+CONDAX as service requires a working OICP connection to the Hubject’s
+HBS as well as a valid CPO User Agreement and Eroaming
+Agreement.footnote:[For more information, please visit
+http://www.hubject.com/[hubject.com]]
+* __Can I use the CONDAX, if I am not a Hubject customer? +
+ +
+__While you cannot use the CONDAX module as a service, you can use its
+source code to build your own data converter and run it on your own
+infrastructure. However, the prerequisite would be, that your POI data
+is stored in the OICP data format.
+* _How can I contribute to the further development of CONDAX?_ +
+ +
+If you have suggestions how to further develop or improve the CONDAX
+service please issue a pull request through Github.
+* _Can I make changes to the CONDAX? +
+ +
+The CONDAX service can only be changed through requests._ However, if
+you are planning to use the CONDAX source code to build a conversion
+layer of your own, you are free to make any changes as the CONDAX has
+been published under a license, which allows for adaptations and
+distribution of changes.
+
+{sp} +
+{sp} +
+
+[arabic, start=4]
+. *License*
+[arabic]
+
+CONDAX - OICP Converter for DATEX II © 2022 by NOW GmbH & Hubject GmbH
+is licensed under CC BY-SA 4.0. To view a copy of this license, visit
+http://creativecommons.org/licenses/by-sa/4.0/
+
+License Deed:
+https://creativecommons.org/licenses/by-sa/4.0/?ref=chooser-v1

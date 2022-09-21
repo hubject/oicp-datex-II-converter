@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<jaxb:bindings version="2.0" xmlns:jaxb="http://java.sun.com/xml/ns/jaxb"
+               jaxb:extensionBindingPrefixes="xjc"
+               xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
+               xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <jaxb:globalBindings>
+        <xjc:javaType name="java.time.LocalTime" xmlType="xs:time"
+                      adapter="com.hubject.datex.convert.adapter.XsdTimeAdapter"/>
+    </jaxb:globalBindings>
+
+    <jaxb:bindings schemaLocation="src/main/resources/soap/DATEXII_3_CISInformation.xsd">
+        <jaxb:schemaBindings>
+            <jaxb:package name="com.hubject.datex.energyinfrastructure.generated.cisinformation"/>
+        </jaxb:schemaBindings>
+    </jaxb:bindings>
+
+    <jaxb:bindings schemaLocation="src/main/resources/soap/DATEXII_3_Common.xsd">
+        <jaxb:schemaBindings>
+            <jaxb:package name="com.hubject.datex.energyinfrastructure.generated.common"/>
+        </jaxb:schemaBindings>
+    </jaxb:bindings>
+
+    <jaxb:bindings schemaLocation="src/main/resources/soap/DATEXII_3_CommonExtension.xsd">
+        <jaxb:schemaBindings>
+            <jaxb:package name="com.hubject.datex.energyinfrastructure.generated.common_extension"/>
+        </jaxb:schemaBindings>
+    </jaxb:bindings>
+
+    <jaxb:bindings schemaLocation="src/main/resources/soap/DATEXII_3_D2Payload.xsd">
+        <jaxb:schemaBindings>
+            <jaxb:package name="com.hubject.datex.energyinfrastructure.generated.payload"/>
+        </jaxb:schemaBindings>
+    </jaxb:bindings>
+
+    <jaxb:bindings schemaLocation="src/main/resources/soap/DATEXII_3_EnergyInfrastructure.xsd">
+        <jaxb:schemaBindings>
+            <jaxb:package name="com.hubject.datex.energyinfrastructure.generated.infrastructure"/>
+        </jaxb:schemaBindings>
+    </jaxb:bindings>
+
+    <jaxb:bindings schemaLocation="src/main/resources/soap/DATEXII_3_ExchangeInformation.xsd">
+        <jaxb:schemaBindings>
+            <jaxb:package name="com.hubject.datex.energyinfrastructure.generated.exchangeinformation"/>
+        </jaxb:schemaBindings>
+    </jaxb:bindings>
+
+    <jaxb:bindings schemaLocation="src/main/resources/soap/DATEXII_3_Facilities.xsd">
+        <jaxb:schemaBindings>
+            <jaxb:package name="com.hubject.datex.energyinfrastructure.generated.facilities"/>
+        </jaxb:schemaBindings>
+    </jaxb:bindings>
+
+    <jaxb:bindings schemaLocation="src/main/resources/soap/DATEXII_3_InformationManagement.xsd">
+        <jaxb:schemaBindings>
+            <jaxb:package name="com.hubject.datex.energyinfrastructure.generated.informationmanagement"/>
+        </jaxb:schemaBindings>
+    </jaxb:bindings>
+
+    <jaxb:bindings schemaLocation="src/main/resources/soap/DATEXII_3_LocationExtension.xsd">
+        <jaxb:schemaBindings>
+            <jaxb:package name="com.hubject.datex.energyinfrastructure.generated.location_extension"/>
+        </jaxb:schemaBindings>
+    </jaxb:bindings>
+
+    <jaxb:bindings schemaLocation="src/main/resources/soap/DATEXII_3_LocationReferencing.xsd">
+        <jaxb:schemaBindings>
+            <jaxb:package name="com.hubject.datex.energyinfrastructure.generated.location_referencing"/>
+        </jaxb:schemaBindings>
+    </jaxb:bindings>
+
+    <jaxb:bindings schemaLocation="src/main/resources/soap/DATEXII_3_MessageContainer.xsd">
+        <jaxb:schemaBindings>
+            <jaxb:package name="com.hubject.datex.energyinfrastructure.generated.messagecontainer"/>
+        </jaxb:schemaBindings>
+    </jaxb:bindings>
+
+</jaxb:bindings>
