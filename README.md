@@ -1,6 +1,6 @@
 # CONDAX - OICP to DATEX II Conversion Module
 
-Here, you can find all information regarding the CONDAX Module for the Hubject Brokering System (HBS). The Module converts POI data from all CPO partners, which are connected to the HBS and transforms it from the OICP format into the DATEX II format (v. 3.2) and transmits the data every 10 minutes to the MDM.
+Here, you can find all information regarding the CONDAX Module for the Hubject Brokering System (HBS). The Module converts POI data from all CPO partners, which are connected to the HBS and transforms it from the OICP format into the DATEX II format (v. 3.2).
 
 ## License
 [![CC BY-SA 4.0][cc-by-sa-shield]][cc-by-sa]
