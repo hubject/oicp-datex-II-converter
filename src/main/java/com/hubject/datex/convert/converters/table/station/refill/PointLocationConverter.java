@@ -16,7 +16,7 @@ import lombok.experimental.UtilityClass;
 
 @UtilityClass
 class PointLocationConverter {
-    private final String SPLIT_REGEX = " ";
+    private static final String SPLIT_REGEX = " ";
 
     PointLocation createPointLocation(GeoCoordinatesDto geoCoordinatesDto, AddressIso19773Dto address) {
         PointLocation pointLocation = new PointLocation();
