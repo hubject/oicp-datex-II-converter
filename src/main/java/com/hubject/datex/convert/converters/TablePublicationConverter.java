@@ -7,14 +7,21 @@ import com.hubject.datex.energyinfrastructure.generated.infrastructure.EnergyInf
 import com.hubject.datex.energyinfrastructure.generated.infrastructure.EnergyInfrastructureTablePublication;
 import com.hubject.datex.convert.model.datarecord.PullEvseDataRecordDto;
 import lombok.experimental.UtilityClass;
-import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Utilities for converting OICP data records to DATEX II Table Publication records.
+ */
 @UtilityClass
 public class TablePublicationConverter {
 
+    /**
+     * Convert OICP data records to DATEX II Table Publication records
+     * @param records OICP data records
+     * @return DATEX II Table Publication records
+     */
     public EnergyInfrastructureTablePublication convert(List<PullEvseDataRecordDto> records) {
         EnergyInfrastructureTablePublication energyInfrastructureTablePublication = new EnergyInfrastructureTablePublication();
         EnergyInfrastructureTable energyInfrastructureTable = new EnergyInfrastructureTable();
@@ -23,7 +30,6 @@ public class TablePublicationConverter {
 
         energyInfrastructureTablePublication.getEnergyInfrastructureTable().add(energyInfrastructureTable);
         return energyInfrastructureTablePublication;
-
     }
 
     private List<EnergyInfrastructureSite> toSites(List<PullEvseDataRecordDto> records) {

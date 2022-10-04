@@ -6,15 +6,22 @@ import com.hubject.datex.energyinfrastructure.generated.infrastructure.EnergyInf
 import com.hubject.datex.energyinfrastructure.generated.infrastructure.EnergyInfrastructureStatusPublication;
 import com.hubject.datex.convert.model.status.EvseStatusRecordDto;
 import lombok.experimental.UtilityClass;
-import lombok.extern.slf4j.Slf4j;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Utilities for converting OICP Status records to DATEX II Status Publication records.
+ */
 @UtilityClass
 public class StatusPublicationConverter {
 
+    /**
+     * Convert OICP Status records to DATEX II Status Publication records
+     * @param records OICP Status records
+     * @return DATEX II Status Publication records
+     */
     public EnergyInfrastructureStatusPublication convert(Collection<EvseStatusRecordDto> records) {
         EnergyInfrastructureStatusPublication statusPublication = new EnergyInfrastructureStatusPublication();
         statusPublication.getEnergyInfrastructureSiteStatus().addAll(toSites(records));
