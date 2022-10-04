@@ -11,8 +11,6 @@ plugins {
 group = "com.hubject.datex"
 version = "1.0.0"
 
-val isCi = System.getenv("CI") == "true"
-
 repositories {
     mavenCentral()
 }
