@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "com.hubject.datex"
-version = "1.0.0"
+version = "1.0.1"
 
 repositories {
     mavenCentral()
@@ -88,15 +88,17 @@ publishing {
     }
 }
 
-tasks.withType<Jar> {
-    val dir = layout.buildDirectory.dir("repos/internal/com/hubject/datex/convert/$version").get()
+tasks.register("bundle", Jar::class) {
+    val dir = layout.buildDirectory.dir("repos/internal/com/hubject/datex/convert/$archiveVersion").get()
     from(dir.asFileTree)
     include("*.jar")
     include("*.pom")
     include("*.sha*")
     include("*.md5")
     include("*.asc")
-    archiveFileName.set("converter-$version-bundle.jar")
+    destinationDirectory.set(layout.buildDirectory.get())
+    archiveFileName.set("converter-$archiveVersion-bundle.jar")
+    dependsOn(tasks.publish)
 }
 
 signing {
@@ -115,8 +117,8 @@ jacoco {
 tasks.jacocoTestReport {
     dependsOn(tasks.test)
     reports {
-        xml.setEnabled(true)
-        csv.setEnabled(true)
+        xml.required.set(true)
+        csv.required.set(true)
     }
     classDirectories.setFrom(
         files(
