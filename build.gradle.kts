@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "com.hubject.datex"
-version = "1.0.1"
+version = "1.0.2"
 
 repositories {
     mavenCentral()
@@ -41,6 +41,8 @@ dependencies {
 java {
     withSourcesJar()
     withJavadocJar()
+    targetCompatibility = JavaVersion.VERSION_11
+    sourceCompatibility = JavaVersion.VERSION_11
 }
 
 publishing {
@@ -89,7 +91,7 @@ publishing {
 }
 
 tasks.register("bundle", Jar::class) {
-    val dir = layout.buildDirectory.dir("repos/internal/com/hubject/datex/convert/$archiveVersion").get()
+    val dir = layout.buildDirectory.dir("repos/internal/com/hubject/datex/convert/${archiveVersion.get()}").get()
     from(dir.asFileTree)
     include("*.jar")
     include("*.pom")
@@ -97,7 +99,7 @@ tasks.register("bundle", Jar::class) {
     include("*.md5")
     include("*.asc")
     destinationDirectory.set(layout.buildDirectory.get())
-    archiveFileName.set("converter-$archiveVersion-bundle.jar")
+    archiveFileName.set("converter-${archiveVersion.get()}-bundle.jar")
     dependsOn(tasks.publish)
 }
 
